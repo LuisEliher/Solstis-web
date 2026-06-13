@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solstis Floristería</title>
+
+  <style>
+    :root {
+      --verde-profundo: #153426;
+      --verde: #2f4b3a;
+      --verde-suave: #6f8464;
+      --crema: #f7f3ec;
+      --marfil: #fffaf2;
+      --dorado: #c8a15a;
+      --dorado-claro: #ead7ae;
+      --sombra: 0 28px 70px rgba(21, 52, 38, 0.16);
+      --radio: 28px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Inter", "Segoe UI", Arial, sans-serif;
+      color: var(--verde-profundo);
+      background:
+        radial-gradient(circle at top left, rgba(200, 161, 90, 0.16), transparent 32rem),
+        linear-gradient(180deg, #fbf6ee 0%, #f2eadf 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: linear-gradient(rgba(21, 52, 38, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(21, 52, 38, 0.035) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent 70%);
+      z-index: -2;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    header {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      z-index: 10;
+      width: min(1120px, calc(100% - 32px));
+      height: 82px;
+      padding: 0 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.58);
+      border-radius: 999px;
+      background: rgba(247, 243, 236, 0.72);
+      box-shadow: 0 18px 50px rgba(21, 52, 38, 0.12);
+      backdrop-filter: blur(18px);
+      transform: translateX(-50%);
+      transition: height 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    header.scrolled {
+      height: 68px;
+      background: rgba(255, 250, 242, 0.9);
+      box-shadow: 0 16px 40px rgba(21, 52, 38, 0.16);
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .logo img {
+      width: 142px;
+      height: 62px;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 18px rgba(21, 52, 38, 0.18));
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    nav a {
+      position: relative;
+      padding: 12px 15px;
+      text-decoration: none;
+      color: var(--verde);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      border-radius: 999px;
+      transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--marfil);
+      background: var(--verde);
+      transform: translateY(-2px);
+    }
+
+    section {
+      position: relative;
+      padding: 110px 8%;
+    }
+
+    .inicio {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 0.84fr);
+      align-items: center;
+      gap: 64px;
+      padding-top: 150px;
+      isolation: isolate;
+    }
+
+    .inicio::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(247, 243, 236, 0.96) 0%, rgba(247, 243, 236, 0.78) 46%, rgba(21, 52, 38, 0.14) 100%),
+        url("img/hero-background.png") center center / cover no-repeat;
+      z-index: -2;
+    }
+
+    .inicio::after {
+      content: "";
+      position: absolute;
+      right: 6%;
+      bottom: 8%;
+      width: 260px;
+      height: 260px;
+      border: 1px solid rgba(200, 161, 90, 0.38);
+      border-radius: 50%;
+      z-index: -1;
+    }
+
+   
+
+    .eyebrow::before {
+      content: "";
+      width: 38px;
+      height: 1px;
+      background: var(--dorado);
+    }
+
+    .inicio-texto {
+      max-width: 660px;
+    }
+
+    .inicio h1 {
+      max-width: 760px;
+      margin-bottom: 26px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(54px, 7.2vw, 98px);
+      line-height: 0.92;
+      letter-spacing: -1px;
+    }
+
+    .inicio p {
+      max-width: 560px;
+      margin-bottom: 34px;
+      color: #496451;
+      font-size: 19px;
+      line-height: 1.75;
+    }
+
+    .acciones {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .boton,
+    button {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 52px;
+      padding: 15px 28px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--verde-profundo);
+      color: var(--marfil);
+      text-decoration: none;
+      letter-spacing: 1.8px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      overflow: hidden;
+      box-shadow: 0 18px 36px rgba(21, 52, 38, 0.22);
+      transition: transform 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
+    }
+
+    .boton::after,
+    button::after {
+      content: "";
+      position: absolute;
+      inset: -50%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.36), transparent);
+      transform: translateX(-80%) rotate(18deg);
+      transition: transform 0.65s ease;
+    }
+
+    .boton:hover,
+    button:hover {
+      background: #244f39;
+      box-shadow: 0 24px 48px rgba(21, 52, 38, 0.28);
+      transform: translateY(-4px);
+    }
+
+    .boton:hover::after,
+    button:hover::after {
+      transform: translateX(80%) rotate(18deg);
+    }
+
+    .boton.secundario {
+      color: var(--verde-profundo);
+      background: rgba(255, 250, 242, 0.68);
+      border: 1px solid rgba(21, 52, 38, 0.16);
+      box-shadow: none;
+      backdrop-filter: blur(14px);
+    }
+
+    .boton.secundario:hover {
+      color: var(--marfil);
+      background: var(--dorado);
+      border-color: transparent;
+    }
+
+    .inicio-imagen {
+   
+      position: relative;
+      min-height: 560px;
+      border-radius: 260px 260px 34px 34px;
+      background: url("img/hero-background.png") center / cover no-repeat;
+      box-shadow: var(--sombra);
+      overflow: hidden;
+    }
+
+    .inicio-imagen::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(255, 250, 242, 0.62);
+      border-radius: inherit;
+    }
+
+    
+
+    .hero-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 32px;
+      color: var(--dorado);
+    }
+
+    .hero-card span {
+      color: #496451;
+      line-height: 1.55;
+    }
+
+    .section-heading {
+      max-width: 730px;
+      margin: 0 auto 52px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 16px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(38px, 4.5vw, 60px);
+      line-height: 1;
+    }
+
+    .section-heading p {
+      color: #5b705f;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .productos-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .producto {
+      position: relative;
+      padding: 18px;
+      border: 1px solid rgba(47, 75, 58, 0.1);
+      border-radius: var(--radio);
+      background: rgba(255, 250, 242, 0.74);
+      box-shadow: 0 16px 44px rgba(21, 52, 38, 0.08);
+      backdrop-filter: blur(14px);
+      overflow: hidden;
+      transition: transform 0.32s ease, box-shadow 0.32s ease, border-color 0.32s ease;
+    }
+
+    .producto:hover {
+      border-color: rgba(200, 161, 90, 0.46);
+      box-shadow: 0 30px 70px rgba(21, 52, 38, 0.16);
+      transform: translateY(-10px);
+    }
+
+    .producto-img {
+      height: 260px;
+      margin-bottom: 22px;
+      padding: 16px;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at center, rgba(255, 255, 255, 0.92), rgba(247, 243, 236, 0.58) 58%, rgba(234, 215, 174, 0.3)),
+        linear-gradient(180deg, #fffaf2, #eee5d7);
+      overflow: hidden;
+    }
+
+    .producto-img img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      object-position: center;
+      transition: transform 0.45s ease;
+    }
+
+    .producto:hover .producto-img img {
+      transform: scale(1.07);
+    }
+
+    .producto h3 {
+      margin-bottom: 10px;
+      font-size: 18px;
+      letter-spacing: 1.2px;
+    }
+
+    .producto p:not(.precio) {
+      margin-bottom: 18px;
+      color: #657766;
+      line-height: 1.55;
+    }
+
+    .precio {
+      color: var(--dorado);
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .nosotros {
+      display: grid;
+      grid-template-columns: 0.85fr 1fr;
+      align-items: center;
+      gap: 70px;
+      background: linear-gradient(180deg, rgba(255, 250, 242, 0), rgba(255, 250, 242, 0.68));
+    }
+
+    .nosotros-img {
+      position: relative;
+      min-height: 440px;
+      display: grid;
+      place-items: center;
+      border-radius: 40px;
+      background:
+        linear-gradient(180deg, rgba(255, 250, 242, 0.72), rgba(255, 250, 242, 0.36)),
+        url("img/hero-background.png") center / cover no-repeat;
+      box-shadow: var(--sombra);
+      overflow: hidden;
+    }
+
+    .nosotros-img img {
+      width: min(230px, 56%);
+      padding: 26px;
+      border-radius: 20%;
+      background: rgba(255, 250, 242, 0.82);
+      box-shadow: 0 24px 56px rgba(21, 52, 38, 0.2);
+      backdrop-filter: blur(12px);
+    }
+
+    .nosotros-texto h2 {
+      text-align: left;
+    }
+
+    .nosotros-texto > p {
+      margin-bottom: 34px;
+      color: #4f6b56;
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    .valores {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .valor {
+      padding: 22px;
+      border: 1px solid rgba(47, 75, 58, 0.1);
+      border-radius: 22px;
+      background: rgba(255, 250, 242, 0.76);
+      transition: transform 0.28s ease, background 0.28s ease;
+    }
+
+    .valor:hover {
+      background: #fffaf2;
+      transform: translateY(-6px);
+    }
+
+    .valor h3 {
+      margin-bottom: 8px;
+      color: var(--dorado);
+    }
+
+    .valor p {
+      color: #5e715f;
+      line-height: 1.5;
+    }
+
+    .contactos {
+      color: var(--marfil);
+      background:
+        linear-gradient(135deg, rgba(21, 52, 38, 0.96), rgba(35, 70, 49, 0.92)),
+        url("img/hero-background.png") center / cover no-repeat;
+    }
+
+    .contactos .section-heading p {
+      color: rgba(255, 250, 242, 0.72);
+    }
+
+    .contacto-contenido {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 44px;
+      align-items: stretch;
+    }
+
+    .info-contacto,
+    form {
+      padding: 34px;
+      border: 1px solid rgba(255, 250, 242, 0.14);
+      border-radius: var(--radio);
+      background: rgba(255, 250, 242, 0.08);
+      backdrop-filter: blur(16px);
+    }
+
+    .info-contacto p {
+      margin-bottom: 20px;
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    form {
+      display: grid;
+      gap: 16px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 17px 18px;
+      border: 1px solid rgba(255, 250, 242, 0.16);
+      border-radius: 16px;
+      outline: none;
+      color: var(--marfil);
+      background: rgba(255, 250, 242, 0.1);
+      font-family: inherit;
+      font-size: 15px;
+      transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(255, 250, 242, 0.58);
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: rgba(234, 215, 174, 0.9);
+      background: rgba(255, 250, 242, 0.16);
+      box-shadow: 0 0 0 4px rgba(200, 161, 90, 0.14);
+    }
+
+    textarea {
+      min-height: 142px;
+      resize: vertical;
+    }
+
+    button {
+      width: fit-content;
+      background: var(--dorado);
+      color: var(--verde-profundo);
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.16);
+    }
+
+    button:hover {
+      background: var(--dorado-claro);
+    }
+
+    footer {
+      padding: 28px 8%;
+      color: rgba(255, 250, 242, 0.8);
+      background: #10261c;
+      text-align: center;
+      letter-spacing: 2px;
+      font-size: 12px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 980px) {
+      header {
+        top: 12px;
+        height: auto;
+        padding: 14px;
+        align-items: flex-start;
+        border-radius: 28px;
+      }
+
+      nav {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .inicio,
+      .nosotros,
+      .contacto-contenido {
+        grid-template-columns: 1fr;
+      }
+
+      .inicio-imagen {
+        min-height: 460px;
+      }
+
+      .productos-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .valores {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      header {
+        position: absolute;
+        width: calc(100% - 22px);
+      }
+
+      .logo span {
+        display: none;
+      }
+
+      .logo img {
+        width: 108px;
+        height: 48px;
+      }
+
+      nav a {
+        padding: 9px 10px;
+        font-size: 10px;
+      }
+
+      section {
+        padding: 86px 20px;
+      }
+
+      .inicio {
+        padding-top: 140px;
+        gap: 34px;
+      }
+
+      .inicio h1 {
+        font-size: 50px;
+      }
+
+      .acciones {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .boton,
+      button {
+        width: 100%;
+      }
+
+      .inicio-imagen,
+      .nosotros-img {
+        min-height: 380px;
+        border-radius: 34px;
+      }
+
+      .hero-card {
+        left: 18px;
+        bottom: 18px;
+      }
+
+      .productos-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .info-contacto,
+      form {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a class="logo" href="#inicio" aria-label="Solstis Floristería">
+      <img src="img/logo-solstis-vertical.png" alt="Logo horizontal de Solstis" />
+    </a>
+
+    <nav aria-label="Navegación principal">
+      <a href="#inicio">INICIO</a>
+      <a href="#productos">PRODUCTOS</a>
+      <a href="#nosotros">NOSOTROS</a>
+      <a href="#contactos">CONTACTOS</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="inicio" id="inicio">
+      <div class="inicio-texto reveal">
+        <span class="eyebrow">Floristería boutique</span>
+        <h1>Flores que cuentan historias</h1>
+        <p>
+          Arreglos florales elegantes, frescos y memorables para celebrar, agradecer,
+          sorprender y transformar cualquier momento en una experiencia inolvidable.
+        </p>
+        <div class="acciones">
+          <a href="#productos" class="boton">VER PRODUCTOS</a>
+          <a href="#contactos" class="boton secundario">COTIZAR ARREGLO</a>
+        </div>
+      </div>
+
+      <div class="inicio-imagen reveal" aria-label="Arreglo floral premium">
+        <div class="hero-card">
+          
+        </div>
+      </div>
+    </section>
+
+    <section id="productos">
+      <div class="section-heading reveal">
+        <span class="eyebrow">Selección especial</span>
+        <h2>Nuestros Productos</h2>
+        <p>
+          Piezas florales pensadas para impactar desde el primer vistazo:
+          composición, color, textura y presentación en perfecta armonía.
+        </p>
+      </div>
+
+      <div class="productos-grid">
+        <article class="producto reveal">
+          <div class="producto-img">
+            <img src="img/producto-1.png" alt="Producto floral Solstis 1" />
+          </div>
+          <h3>Arreglo Floral 01</h3>
+          <p>Diseño elegante creado con flores seleccionadas.</p>
+          <p class="precio">$45.00</p>
+        </article>
+
+        <article class="producto reveal">
+          <div class="producto-img">
+            <img src="img/producto-2.png" alt="Producto floral Solstis 2" />
+          </div>
+          <h3>Arreglo Floral 02</h3>
+          <p>Composición premium con presencia y acabado refinado.</p>
+          <p class="precio">$75.00</p>
+        </article>
+
+        <article class="producto reveal">
+          <div class="producto-img">
+            <img src="img/producto-3.png" alt="Producto floral Solstis 3" />
+          </div>
+          <h3>Arreglo Floral 03</h3>
+          <p>Un detalle sofisticado para regalar con intención.</p>
+          <p class="precio">$65.00</p>
+        </article>
+
+        <article class="producto reveal">
+          <div class="producto-img">
+            <img src="img/producto-4.png" alt="Producto floral Solstis 4" />
+          </div>
+          <h3>Arreglo Floral 04</h3>
+          <p>Delicadeza, textura y presencia para ocasiones especiales.</p>
+          <p class="precio">$55.00</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="nosotros" id="nosotros">
+      <div class="nosotros-img reveal">
+        <img src="img/logo-solstis.png" alt="Logo floral de Solstis" />
+      </div>
+
+      <div class="nosotros-texto reveal">
+        <span class="eyebrow">Nuestra esencia</span>
+        <h2>Sobre Nosotros</h2>
+        <p>
+          En Solstis Floristería creamos arreglos con flores cuidadosamente
+          seleccionadas para transmitir emoción, belleza y alegría. Cada pieza se
+          diseña como un gesto personal, con estética profesional y acabado premium.
+        </p>
+
+        <div class="valores">
+          <div class="valor">
+            <h3>Calidad</h3>
+            <p>Flores frescas, seleccionadas y preparadas para durar.</p>
+          </div>
+
+          <div class="valor">
+            <h3>Pasión</h3>
+            <p>Diseño floral hecho con intención en cada detalle.</p>
+          </div>
+
+          <div class="valor">
+            <h3>Sostenible</h3>
+            <p>Compromiso con procesos cuidadosos y materiales responsables.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="contactos" id="contactos">
+      <div class="section-heading reveal">
+      
+        <h2>Contáctanos</h2>
+        <p>
+          Cuéntanos la ocasión y te ayudamos a elegir una composición floral que
+          se sienta especial desde el primer momento.
+        </p>
+      </div>
+
+      <div class="contacto-contenido">
+        <div class="info-contacto reveal">
+          <p><strong>Ubicación:</strong> Calle Melancolía 967, Prismarama</p>
+          <p><strong>Teléfono:</strong> +1 234 567 890</p>
+          <p><strong>Correo:</strong> solstisfloristeria@gmail.com</p>
+          <p><strong>Instagram:</strong> @solstis.floristeria</p>
+        </div>
+
+        <form class="reveal">
+          <input type="text" placeholder="Nombre" aria-label="Nombre" required />
+          <input type="email" placeholder="Correo" aria-label="Correo" required />
+          <input type="tel" placeholder="Teléfono" aria-label="Teléfono" />
+          <textarea placeholder="Mensaje" aria-label="Mensaje" required></textarea>
+          <button type="submit">ENVIAR MENSAJE</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    SOLSTIS FLORISTERÍA © 2026
+  </footer>
+
+  <script>
+    const header = document.querySelector("header");
+    const navLinks = document.querySelectorAll("nav a");
+    const sections = document.querySelectorAll("main section[id]");
+    const revealElements = document.querySelectorAll(".reveal");
+    const form = document.querySelector("form");
+
+    const updateHeader = () => {
+      header.classList.toggle("scrolled", window.scrollY > 24);
+    };
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+
+        navLinks.forEach((link) => {
+          link.classList.toggle("active", link.getAttribute("href") === `#${entry.target.id}`);
+        });
+      });
+    }, { rootMargin: "-42% 0px -52% 0px" });
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.18 });
+
+    sections.forEach((section) => sectionObserver.observe(section));
+    revealElements.forEach((element) => revealObserver.observe(element));
+
+    window.addEventListener("scroll", updateHeader, { passive: true });
+    updateHeader();
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const button = form.querySelector("button");
+      const originalText = button.textContent;
+
+      button.textContent = "MENSAJE LISTO";
+      form.reset();
+
+      setTimeout(() => {
+        button.textContent = originalText;
+      }, 2200);
+    });
+  </script>
+</body>
+</html>
